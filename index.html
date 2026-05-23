@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Great Hall - Wizarding Typing Odyssey</title>
+    <!-- Google Fonts for Gothic, Magical and Medieval Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700;900&family=MedievalSharp&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Particle Canvas (Floating Hogwarts Candles & Star Embers) -->
+    <canvas id="ambient-canvas"></canvas>
+
+    <!-- Warm Vignette/Candlelight Glow Layer -->
+    <div class="candle-glow"></div>
+    <div class="vignette"></div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <h1 class="glow-text">Hogwarts Great Hall</h1>
+            <p class="subtitle">⚡ Complete Your Scribing O.W.L.s & Summon Magical Melodies ⚡</p>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main class="main-layout">
+            <!-- LEFT SECTION: THE SCRIBE'S WORKPLACE (TYPING AREA) -->
+            <section class="typing-section">
+                <!-- Text Selection & Control Bar -->
+                <div class="scroll-selection-bar">
+                    <label class="gold-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Select Scroll of Magic:</label>
+                    <div class="scroll-tabs">
+                        <button class="tab-btn active" data-genre="spell">🔮 Spell Grimoire</button>
+                        <button class="tab-btn" data-genre="map">⚡ Marauder's Map</button>
+                        <button class="tab-btn" data-genre="legend">🏰 Castle Legends</button>
+                        <button class="tab-btn" data-genre="hallows">💎 Deathly Hallows</button>
+                    </div>
+                </div>
+
+                <!-- Hidden Input for Seamless Typing Capture -->
+                <input type="text" id="typing-input" autocomplete="off" autofocus class="hidden-input">
+
+                <!-- The Aged Parchment Scroll -->
+                <div class="parchment-scroll-container" id="scroll-wrapper">
+                    <!-- Parchment Roll Ends -->
+                    <div class="scroll-wood top-wood"></div>
+                    
+                    <div class="parchment-body" id="scroll-body">
+                        <!-- Watermark/Background Shield on Parchment -->
+                        <div class="parchment-watermark">⚡</div>
+                        
+                        <!-- Interactive Text Box -->
+                        <div class="text-display-box" id="text-display">
+                            <!-- Words and characters will be dynamically generated here -->
+                            <span class="placeholder-text">Click here to dip your quill and cast your typing spells...</span>
+                        </div>
+
+                        <!-- Typing Focus Overlay (shows when user loses focus) -->
+                        <div class="focus-overlay" id="focus-overlay">
+                            <div class="focus-message animate-pulse">
+                                <i class="fa-solid fa-feather-pointed"></i>
+                                <p>Click to dip your quill in ink</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scroll-wood bottom-wood"></div>
+                </div>
+
+                <!-- The Scribe's Stats Deck -->
+                <div class="stats-deck">
+                    <div class="stat-box shield-stat WPM-box">
+                        <div class="stat-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-wpm">0</span>
+                            <span class="stat-label">Casting Speed (WPM)</span>
+                        </div>
+                    </div>
+                    <div class="stat-box shield-stat ACC-box">
+                        <div class="stat-icon"><i class="fa-solid fa-wand-sparkles"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-acc">100%</span>
+                            <span class="stat-label">Spell Accuracy</span>
+                        </div>
+                    </div>
+                    <div class="stat-box shield-stat TIME-box">
+                        <div class="stat-icon"><i class="fa-solid fa-hourglass-empty"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-timer">60s</span>
+                            <span class="stat-label">Hourglass Sand</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="scribe-controls">
+                    <button class="medieval-btn btn-secondary" id="restart-btn">
+                        <i class="fa-solid fa-undo"></i> Reset Scroll (ESC)
+                    </button>
+                    <div class="keyboard-helper">
+                        <span><i class="fa-regular fa-keyboard"></i> Focus the parchment and type out the spell grimoire.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT SECTION: THE BARD'S STAGE (MUSIC & VISUALIZER) -->
+            <section class="bard-section">
+                <!-- Visualizer & Alchemical Circle -->
+                <div class="alchemical-container">
+                    <div class="alchemical-frame">
+                        <canvas id="visualizer-canvas"></canvas>
+                        <!-- Center Core of the magic circle -->
+                        <div class="alchemy-core">
+                            <div class="music-icon-pulse" id="music-pulsar">
+                                <i class="fa-solid fa-hat-wizard"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bard's Music Player Interface -->
+                <div class="bard-player-box">
+                    <h3 class="gold-title-small"><i class="fa-solid fa-music"></i> Gryffindor Music Hearth</h3>
+                    
+                    <!-- Track Info Scroll -->
+                    <div class="music-track-title">
+                        <div class="track-scroll-text" id="track-name">🎵 Ambient: Hedwig's Theme (Procedural Celesta chimes)</div>
+                    </div>
+
+                    <!-- Custom Music Summoner (File Upload) -->
+                    <div class="music-upload-zone" id="music-dropzone">
+                        <input type="file" id="music-file-input" accept="audio/*" class="hidden-file-input">
+                        <div class="upload-prompt">
+                            <i class="fa-brands fa-fort-awesome upload-icon"></i>
+                            <span>Summon Harry Potter Soundtracks (.mp3)</span>
+                            <span class="upload-sub">Click to select audio from your local inventory</span>
+                        </div>
+                    </div>
+
+                    <!-- Player Controls -->
+                    <div class="player-controls">
+                        <button class="player-btn" id="play-pause-btn" title="Play/Pause">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                        
+                        <!-- Volume & Ambient Mixers -->
+                        <div class="audio-sliders">
+                            <!-- Main Music Volume -->
+                            <div class="slider-group">
+                                <span class="slider-icon" title="Celesta/Music Volume"><i class="fa-solid fa-bell"></i></span>
+                                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" class="medieval-slider">
+                            </div>
+                            
+                            <!-- Ambient Castle fireplace & wind -->
+                            <div class="slider-group">
+                                <span class="slider-icon" title="Castle Wind & Fireplace"><i class="fa-solid fa-fire"></i></span>
+                                <input type="range" id="ambient-slider" min="0" max="1" step="0.05" value="0.2" class="medieval-slider">
+                                <span class="ambient-status-label">Castle Ambience</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quill Sound Settings -->
+                <div class="sound-settings-box">
+                    <h4 class="gold-title-tiny"><i class="fa-solid fa-quill"></i> Scribe Writing Sounds</h4>
+                    <div class="toggle-container">
+                        <label class="switch-label">
+                            <input type="checkbox" id="quill-sound-toggle" checked>
+                            <span class="slider round"></span>
+                            <span>Enable Quill Scratch Sounds</span>
+                        </label>
+                    </div>
+                    <p class="sound-desc">Synthesizes organic writing scratching sounds in real-time on keypresses.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MEDIEVAL DECREE MODAL (RESULTS OVERLAY) -->
+    <div class="modal-overlay" id="results-modal">
+        <div class="royal-decree-scroll">
+            <div class="scroll-seal">✉️</div>
+            <h2 class="decree-title">Ministry of Magic</h2>
+            <p class="decree-intro">O.W.L. (Ordinary Wizarding Level) Scribing Examination Results</p>
+            
+            <div class="rank-container">
+                <div class="rank-badge" id="rank-badge">🧙‍♂️</div>
+                <div class="rank-title" id="rank-title">HEADMASTER LEVEL</div>
+                <p class="rank-description" id="rank-desc">Outstanding! Your spelling incantations were cast with supreme wizarding prowess!</p>
+            </div>
+
+            <!-- Detailed Stats Table -->
+            <div class="decree-stats">
+                <div class="decree-stat-row">
+                    <span class="decree-label">Casting Speed:</span>
+                    <span class="decree-val" id="results-wpm">82 WPM</span>
+                </div>
+                <div class="decree-stat-row">
+                    <span class="decree-label">Spell Accuracy:</span>
+                    <span class="decree-val" id="results-acc">99%</span>
+                </div>
+                <div class="decree-stat-row">
+                    <span class="decree-label">Hourglass Time:</span>
+                    <span class="decree-val" id="results-time">60 seconds</span>
+                </div>
+                <div class="decree-stat-row">
+                    <span class="decree-label">Spelling Typos:</span>
+                    <span class="decree-val" id="results-errors">1 mistake</span>
+                </div>
+            </div>
+
+            <div class="decree-actions">
+                <button class="medieval-btn btn-primary" id="modal-retry-btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Transcribe Another Spellbook
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
