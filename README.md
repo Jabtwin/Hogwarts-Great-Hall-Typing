@@ -1,5 +1,7 @@
 # Hogwarts Great Hall Typing Odyssey ⚡
 
+![Hogwarts Great Hall Typing Odyssey Screenshot](images/screenshot.png)
+
 An immersive, high-aesthetic web-based typing practice game set in the cinematic **Hogwarts Great Hall** from the Harry Potter universe. It features floating candles, starry night sky dynamics, customizable soundtrack uploads, and programmatically synthesized magic Celesta bells playing the iconic Hedwig's Theme intro under Gryffindor fireplace crackles and howling wind storm soundscapes.
 
 ---
